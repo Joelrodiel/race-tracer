@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <limits>
 
 #include "Sphere.h"
 #include "Hitable_list.h"
@@ -62,8 +63,8 @@ int main(int argc, char* argv[])
 
             for (int s = 0; s < ns; s++)
             {
-                float u = float(i + drand48()) / float(width);
-                float v = float(j + drand48()) / float(height);
+                float u = float(i + (rand() / (RAND_MAX + 1.0))) / float(width);
+                float v = float(j + (rand() / (RAND_MAX + 1.0))) / float(height);
 
                 Ray r = cam.get_ray(u, v);
                 col += color(r, world, 0);
@@ -97,7 +98,7 @@ int main(int argc, char* argv[])
 Vec3 color(const Ray& r, Hitable *world, int depth)
 {
     hit_record rec;
-    if (world->hit(r, 0.001, MAXFLOAT, rec))
+    if (world->hit(r, 0.001, 10000.0, rec))
     {
         Ray scattered;
         Vec3 attenuation;
